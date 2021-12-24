@@ -17,7 +17,7 @@ public class HomeService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
-    public String home(Model model) {
+    public String paginacaoOrdenacao(Model model) {
 
         Sort sort = Sort.by("dataEntrega").descending();
         PageRequest paginacao = PageRequest.of(0, 10, sort);
