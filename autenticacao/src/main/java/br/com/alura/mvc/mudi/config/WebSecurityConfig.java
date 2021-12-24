@@ -1,4 +1,4 @@
-package br.com.alura.mvc.mudi;
+package br.com.alura.mvc.mudi.config;
 
 import javax.sql.DataSource;
 

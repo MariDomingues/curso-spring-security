@@ -1,4 +1,4 @@
-package br.com.alura.mvc.mudi.dto;
+package br.com.alura.mvc.mudi.model.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -7,9 +7,9 @@ import java.time.format.DateTimeFormatter;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import br.com.alura.mvc.mudi.model.Oferta;
+import br.com.alura.mvc.mudi.model.entity.OfertaEntity;
 
-public class RequisicaoNovaOferta {
+public class RequisicaoNovaOfertaDto {
 	
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -21,7 +21,7 @@ public class RequisicaoNovaOferta {
 	
 	@Pattern(regexp = "^\\d{2}/\\d{2}/\\d{4}$")
 	@NotNull
-	private String dataDaEntrega;
+	private String dataEntrega;
 	
 	private String comentario;
 
@@ -41,12 +41,12 @@ public class RequisicaoNovaOferta {
 		this.valor = valor;
 	}
 
-	public String getDataDaEntrega() {
-		return dataDaEntrega;
+	public String getDataEntrega() {
+		return dataEntrega;
 	}
 
-	public void setDataDaEntrega(String dataDaEntrega) {
-		this.dataDaEntrega = dataDaEntrega;
+	public void setDataEntrega(String dataEntrega) {
+		this.dataEntrega = dataEntrega;
 	}
 
 	public String getComentario() {
@@ -57,12 +57,12 @@ public class RequisicaoNovaOferta {
 		this.comentario = comentario;
 	}
 
-	public Oferta toOferta() {
-		Oferta oferta = new Oferta();
-		oferta.setComentario(this.comentario);
-		oferta.setDataDaEntrega(LocalDate.parse(this.dataDaEntrega, formatter));
-		oferta.setValor(new BigDecimal(this.valor));
-		return oferta;
+	public OfertaEntity toOferta() {
+		OfertaEntity ofertaEntity = new OfertaEntity();
+		ofertaEntity.setComentario(this.comentario);
+		ofertaEntity.setDataEntrega(LocalDate.parse(this.dataEntrega, formatter));
+		ofertaEntity.setValor(new BigDecimal(this.valor));
+		return ofertaEntity;
 	}
 	
 	

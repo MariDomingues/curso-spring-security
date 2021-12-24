@@ -1,11 +1,11 @@
-package br.com.alura.mvc.mudi.dto;
+package br.com.alura.mvc.mudi.model.dto;
 
 import javax.validation.constraints.NotBlank;
 
-import br.com.alura.mvc.mudi.model.Pedido;
-import br.com.alura.mvc.mudi.model.StatusPedido;
+import br.com.alura.mvc.mudi.model.entity.PedidoEntity;
+import br.com.alura.mvc.mudi.model.enums.StatusPedido;
 
-public class RequisicaoNovoPedido {
+public class RequisicaoNovoPedidoDto {
 	
 	@NotBlank
 	private String nomeProduto;
@@ -42,14 +42,14 @@ public class RequisicaoNovoPedido {
 		this.descricao = descricao;
 	}
 	
-	public Pedido toPedido() {
-		Pedido pedido = new Pedido();
-		pedido.setDescricao(descricao);
-		pedido.setNomeProduto(nomeProduto);
-		pedido.setUrlImagem(urlImagem);
-		pedido.setUrlProduto(urlProduto);
-		pedido.setStatus(StatusPedido.AGUARDANDO);
-		return pedido;
+	public PedidoEntity toPedido() {
+		PedidoEntity pedidoEntity = new PedidoEntity();
+		pedidoEntity.setDescricao(descricao);
+		pedidoEntity.setNomeProduto(nomeProduto);
+		pedidoEntity.setUrlImagem(urlImagem);
+		pedidoEntity.setUrlProduto(urlProduto);
+		pedidoEntity.setStatus(StatusPedido.AGUARDANDO);
+		return pedidoEntity;
 	}
 	
 	

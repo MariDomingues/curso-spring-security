@@ -26,9 +26,9 @@
 									</div>
 								</div>
 								<div class="col-md-7">
-									Data da entrega: <input v-bind:class="{'is-invalid':pedido.erros.dataDaEntrega !==''}" class="form-control" v-model="pedido.dataDaEntrega"/>
-									<div v-if="pedido.erros.dataDaEntrega" class="invalid-feedback">
-										{{pedido.erros.dataDaEntrega}}
+									Data da entrega: <input v-bind:class="{'is-invalid':pedido.erros.dataEntrega !==''}" class="form-control" v-model="pedido.dataEntrega"/>
+									<div v-if="pedido.erros.dataEntrega" class="invalid-feedback">
+										{{pedido.erros.dataEntrega}}
 									</div>
 								</div>
 							</div>
@@ -64,7 +64,7 @@
 					    	  		pedido.ofertaEnviada = false;
 					    	  		pedido.erros = {
 					    	  			valor: '',
-					    	  			dataDaEntrega: ''
+					    	  			dataEntrega: ''
 					    	  		}
 					    	  	})
 					    	 	this.pedidos = response.data
@@ -74,14 +74,14 @@
 						enviarOferta: function(pedido) {
 							pedido.erros = {
 			    	  			valor: '',
-			    	  			dataDaEntrega: ''
+			    	  			dataEntrega: ''
 			    	  		};
 							
 							axios
 						      .post('http://localhost:8080/api/ofertas', {
 						    	  pedidoId: pedido.id,
 						    	  valor: pedido.valorNegociado,
-						    	  dataDaEntrega: pedido.dataDaEntrega,
+						    	  dataEntrega: pedido.dataEntrega,
 						    	  comentario: pedido.comentario
 						      })
 						      .then(response => pedido.ofertaEnviada = true)

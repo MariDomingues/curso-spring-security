@@ -1,13 +1,8 @@
 package br.com.alura.mvc.mudi.controller;
 
-import br.com.alura.mvc.mudi.model.Authority;
-import br.com.alura.mvc.mudi.model.Pedido;
-import br.com.alura.mvc.mudi.model.StatusPedido;
-import br.com.alura.mvc.mudi.model.User;
-import br.com.alura.mvc.mudi.repository.PedidoRepository;
-import br.com.alura.mvc.mudi.repository.UserRepository;
+import br.com.alura.mvc.mudi.model.entity.UserEntity;
+import br.com.alura.mvc.mudi.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,63 +11,41 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequestMapping("usuario")
 public class UsuarioController {
 
 	@Autowired
-	private PedidoRepository pedidoRepository;
-
-	@Autowired
-	private UserRepository repository;
+	private UsuarioService usuarioService;
 	
 	@GetMapping("pedido")
-	public String home(Model model, Principal principal) {
+	public String home(Model pModel, Principal pPrincipal) {
 
-		List<Pedido> pedidos = pedidoRepository.findAllByUsuario(principal.getName());
-		model.addAttribute("pedidos", pedidos);
-
-		return "usuario/home";
+		return usuarioService.home(pModel, pPrincipal.getName());
 	}
 	
 	@GetMapping("pedido/{status}")
-	public String porStatus(@PathVariable("status") String status, Model model, Principal principal) {
+	public String porStatus(@PathVariable("status") String status, Model pModel, Principal principal) {
 
-		List<Pedido> pedidos = pedidoRepository.findByStatusEUsuario(StatusPedido.valueOf(status.toUpperCase()), principal.getName());
-		model.addAttribute("pedidos", pedidos);
-		model.addAttribute("status", status);
-
-		return "usuario/home";
+		return usuarioService.porStatus(status, pModel, principal);
 	}
 	
 	@ExceptionHandler(IllegalArgumentException.class)
 	public String onError() {
-		return "redirect:/usuario/home";
+
+		return usuarioService.onError();
 	}
 
 	@GetMapping("/cadastrar")
 	public ModelAndView login() {
 
-		ModelAndView mv = new ModelAndView("/usuario/formulario");
-		mv.addObject("user", new User());
-
-		return mv;
+		return usuarioService.login();
 	}
 
 	@PostMapping("/cadastrar")
-	public String cadastrar(@Valid User user, BindingResult result) {
+	public String cadastrar(@Valid UserEntity userEntity, BindingResult result) {
 
-		if (result.hasErrors()) {
-			return "/usuario/formulario";
-		}
-
-		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-		user.setEnabled(true);
-		user.setAuthorities(new Authority("USER"));
-		repository.save(user);
-
-		return "redirect:/login";
+		return usuarioService.cadastrar(userEntity, result);
 	}
 }

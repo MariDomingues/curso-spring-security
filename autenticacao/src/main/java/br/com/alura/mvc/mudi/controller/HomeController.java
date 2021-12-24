@@ -3,6 +3,7 @@ package br.com.alura.mvc.mudi.controller;
 import java.security.Principal;
 import java.util.List;
 
+import br.com.alura.mvc.mudi.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -11,8 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.com.alura.mvc.mudi.model.Pedido;
-import br.com.alura.mvc.mudi.model.StatusPedido;
+import br.com.alura.mvc.mudi.model.entity.PedidoEntity;
+import br.com.alura.mvc.mudi.model.enums.StatusPedido;
 import br.com.alura.mvc.mudi.repository.PedidoRepository;
 
 @Controller
@@ -20,17 +21,12 @@ import br.com.alura.mvc.mudi.repository.PedidoRepository;
 public class HomeController {
 
     @Autowired
-    private PedidoRepository pedidoRepository;
+    private HomeService homeService;
 
     @GetMapping
-    public String home(Model model, Principal principal) {
+    //principal - dados do usuario logado
+    public String home(Model pModel, Principal pPrincipal) {
 
-        Sort sort = Sort.by("dataDaEntrega").descending();
-        PageRequest paginacao = PageRequest.of(0, 10, sort);
-
-        List<Pedido> pedidos = pedidoRepository.findByStatus(StatusPedido.ENTREGUE, paginacao);
-        model.addAttribute("pedidos", pedidos);
-
-        return "home";
+        return homeService.home(pModel);
     }
 }
